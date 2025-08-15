@@ -1,7 +1,11 @@
 import React, { useState, useEffect, createContext, useContext } from 'react';
 
+// --- Firebase Imports ---
+// Make sure to install firebase: npm install firebase
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, onSnapshot, doc, setDoc } from 'firebase/firestore';
+
 // --- ICONS (Lucide-React SVGs as Components) ---
-// Using inline SVGs to avoid external dependencies and ensure they work in the sandboxed environment.
 const MenuIcon = (props) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="4" x2="20" y1="12" y2="12" /><line x1="4" x2="20" y1="6" y2="6" /><line x1="4" x2="20" y1="18" y2="18" /></svg>
 );
@@ -55,12 +59,28 @@ const CheckCircleIcon = (props) => (
 );
 
 
+// --- Firebase Configuration ---
+// IMPORTANT: Replace this with your own Firebase project configuration
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_STORAGE_BUCKET",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+
 // --- CONTEXTS ---
 const ThemeContext = createContext();
 const AuthContext = createContext();
 const AppContext = createContext();
 
-// --- DUMMY DATA ---
+// --- DUMMY DATA (for seeding and fallback) ---
 const DUMMY_MENU_ITEMS = {
     'Appetizers': [
         { id: 1, name: 'Bruschetta', description: 'Grilled bread with tomatoes, garlic, basil, and olive oil.', price: 8.99, image: 'https://placehold.co/400x300/EAD9C8/513429?text=Bruschetta' },
@@ -125,14 +145,10 @@ const ThemeProvider = ({ children }) => {
 };
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null); // null, { name: 'Admin User', role: 'admin' }, or { name: 'Customer Name', role: 'customer' }
+    const [user, setUser] = useState(null);
 
     const login = (role) => {
-        if (role === 'admin') {
-            setUser({ name: 'Adminstrator', role: 'admin' });
-        } else {
-            setUser({ name: 'John Doe', role: 'customer' });
-        }
+        setUser(role === 'admin' ? { name: 'Administrator', role: 'admin' } : { name: 'John Doe', role: 'customer' });
     };
 
     const logout = () => {
@@ -151,15 +167,12 @@ const AppProvider = ({ children }) => {
     const { user } = useContext(AuthContext);
 
     const navigate = (newPage) => {
-        if (!user && (newPage.startsWith('admin-') || newPage.startsWith('customer-'))) {
-            setPage('home');
-        } else {
-            setPage(newPage);
-            window.scrollTo(0, 0);
-        }
+        setPage(newPage);
+        window.scrollTo(0, 0);
     };
 
     useEffect(() => {
+        // This effect handles redirection if a logged-out user tries to access a protected page.
         if (!user && (page.startsWith('admin-') || page.startsWith('customer-'))) {
             navigate('home');
         }
@@ -172,8 +185,6 @@ const AppProvider = ({ children }) => {
         </AppContext.Provider>
     );
 };
-
-
 // --- LAYOUT COMPONENTS ---
 const Navbar = () => {
     const { theme, toggleTheme } = useContext(ThemeContext);
@@ -206,15 +217,15 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <div className="flex items-center">
-                        <a onClick={() => navigate('home')} className="cursor-pointer flex-shrink-0 flex items-center space-x-2">
+                        <button onClick={() => navigate('home')} className="cursor-pointer flex-shrink-0 flex items-center space-x-2">
                             <UtensilsIcon className="h-8 w-8 text-indigo-600 dark:text-indigo-400" />
                             <span className="text-2xl font-bold text-gray-800 dark:text-white">DigitalMenuPro</span>
-                        </a>
+                        </button>
                     </div>
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-baseline space-x-4">
                             {navLinks.map((link) => (
-                                <a
+                                <button
                                     key={link.name}
                                     onClick={() => navigate(link.path)}
                                     className={`cursor-pointer px-3 py-2 rounded-md text-sm font-medium ${
@@ -224,7 +235,7 @@ const Navbar = () => {
                                     }`}
                                 >
                                     {link.name}
-                                </a>
+                                </button>
                             ))}
                         </div>
                     </div>
@@ -241,9 +252,9 @@ const Navbar = () => {
                                     </button>
                                 </div>
                             ) : (
-                                <a onClick={() => navigate('login')} className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                <button onClick={() => navigate('login')} className="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     Login / Register
-                                </a>
+                                </button>
                             )}
                         </div>
                         <div className="-mr-2 flex md:hidden">
@@ -259,17 +270,17 @@ const Navbar = () => {
                 <div className="md:hidden">
                     <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                         {navLinks.map((link) => (
-                            <a
+                            <button
                                 key={link.name}
                                 onClick={() => { navigate(link.path); setIsMenuOpen(false); }}
-                                className={`cursor-pointer block px-3 py-2 rounded-md text-base font-medium ${
+                                className={`cursor-pointer block w-full text-left px-3 py-2 rounded-md text-base font-medium ${
                                     page === link.path
                                         ? 'bg-indigo-100 text-indigo-700 dark:bg-gray-800 dark:text-white'
                                         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                                 }`}
                             >
                                 {link.name}
-                            </a>
+                            </button>
                         ))}
                     </div>
                     <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-700">
@@ -285,14 +296,14 @@ const Navbar = () => {
                                  </button>
                             </div>
                             <div className="mt-3 px-2 space-y-1">
-                                <a onClick={() => { handleDashboardClick(); setIsMenuOpen(false); }} className="cursor-pointer block rounded-md px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</a>
+                                <button onClick={() => { handleDashboardClick(); setIsMenuOpen(false); }} className="cursor-pointer block w-full text-left rounded-md px-3 py-2 text-base font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700">Dashboard</button>
                             </div>
                           </>
                       ) : (
                           <div className="px-5">
-                            <a onClick={() => { navigate('login'); setIsMenuOpen(false); }} className="cursor-pointer block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
+                            <button onClick={() => { navigate('login'); setIsMenuOpen(false); }} className="cursor-pointer block w-full text-center px-4 py-2 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700">
                                 Login / Register
-                            </a>
+                            </button>
                           </div>
                       )}
                     </div>
@@ -317,15 +328,15 @@ const Footer = () => {
                             The Future of Dining is Here. Empower your restaurant with seamless digital solutions.
                         </p>
                         <div className="flex space-x-6">
-                            <a href="#" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                                 <span className="sr-only">Facebook</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clipRule="evenodd" /></svg>
                             </a>
-                             <a href="#" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                             <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                                 <span className="sr-only">Instagram</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.024.06 1.378.06 3.808s-.012 2.784-.06 3.808c-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.024.048-1.378.06-3.808.06s-2.784-.012-3.808-.06c-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.048-1.024-.06-1.378-.06-3.808s.012-2.784.06-3.808c.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 016.08 2.525c.636-.247 1.363-.416 2.427-.465C9.53 2.013 9.884 2 12.315 2zM12 7.177a4.823 4.823 0 100 9.646 4.823 4.823 0 000-9.646zm0 7.94a3.117 3.117 0 110-6.234 3.117 3.117 0 010 6.234zm6.406-7.194a1.18 1.18 0 100-2.36 1.18 1.18 0 000 2.36z" clipRule="evenodd" /></svg>
                             </a>
-                             <a href="#" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
                                 <span className="sr-only">LinkedIn</span>
                                 <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
                             </a>
@@ -336,10 +347,10 @@ const Footer = () => {
                             <div>
                                 <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-300 tracking-wider uppercase">Quick Links</h3>
                                 <ul className="mt-4 space-y-4">
-                                    <li><a onClick={() => navigate('home')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Home</a></li>
-                                    <li><a onClick={() => navigate('features')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Features</a></li>
-                                    <li><a onClick={() => navigate('pricing')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Pricing</a></li>
-                                    <li><a onClick={() => navigate('contact')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Contact</a></li>
+                                    <li><button onClick={() => navigate('home')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Home</button></li>
+                                    <li><button onClick={() => navigate('features')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Features</button></li>
+                                    <li><button onClick={() => navigate('pricing')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Pricing</button></li>
+                                    <li><button onClick={() => navigate('contact')} className="cursor-pointer text-base text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">Contact</button></li>
                                 </ul>
                             </div>
                         </div>
@@ -754,7 +765,41 @@ const LoginPage = () => {
         </div>
     );
 };
+// --- Helper component to seed the database ---
+const SeedDatabaseButton = () => {
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
 
+    const seedDatabase = async () => {
+        setLoading(true);
+        setMessage('');
+        try {
+            // Seed Menu
+            for (const category in DUMMY_MENU_ITEMS) {
+                await setDoc(doc(db, "menu", category), { items: DUMMY_MENU_ITEMS[category] });
+            }
+            // Seed Orders
+            for (const order of DUMMY_ORDERS) {
+                await setDoc(doc(db, "orders", order.id), order);
+            }
+            setMessage('Database seeded successfully!');
+        } catch (error) {
+            console.error("Error seeding database: ", error);
+            setMessage('Error seeding database. Check console.');
+        }
+        setLoading(false);
+    };
+
+    return (
+        <div className="my-4 p-4 bg-yellow-100 dark:bg-gray-700 rounded-lg">
+            <p className="text-sm text-yellow-800 dark:text-yellow-200">For demonstration purposes: Click this button once to populate your Firestore database with the initial sample data.</p>
+            <button onClick={seedDatabase} disabled={loading} className="mt-2 px-4 py-2 bg-indigo-600 text-white rounded-md disabled:bg-gray-400">
+                {loading ? 'Seeding...' : 'Seed Database'}
+            </button>
+            {message && <p className="mt-2 text-sm font-semibold">{message}</p>}
+        </div>
+    );
+};
 const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState('analytics');
     
@@ -779,6 +824,8 @@ const AdminDashboard = () => {
         <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Admin Dashboard</h1>
+                {/* Seed Database Button - for one-time setup */}
+                <SeedDatabaseButton />
                 <div className="mt-6 border-b border-gray-200 dark:border-gray-700">
                     <nav className="-mb-px flex space-x-6 overflow-x-auto" aria-label="Tabs">
                         {tabs.map(tab => (
@@ -860,7 +907,23 @@ const AnalyticsContent = () => {
 };
 
 const MenuManager = () => {
-    const [menuItems, setMenuItems] = useState(DUMMY_MENU_ITEMS);
+    const [menuItems, setMenuItems] = useState({});
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
+            const menuData = {};
+            snapshot.forEach(doc => {
+                menuData[doc.id] = doc.data().items;
+            });
+            setMenuItems(menuData);
+        });
+        return () => unsubscribe(); // Cleanup listener on component unmount
+    }, []);
+
+    if (Object.keys(menuItems).length === 0) {
+        return <p>Loading menu or no items found in database...</p>
+    }
+
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div className="flex justify-between items-center mb-6">
@@ -896,8 +959,8 @@ const MenuManager = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${item.price.toFixed(2)}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <a href="#" className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">Edit</a>
-                                                <a href="#" className="ml-4 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200">Delete</a>
+                                                <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">Edit</button>
+                                                <button className="ml-4 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200">Delete</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -912,6 +975,16 @@ const MenuManager = () => {
 };
 
 const OrderManager = () => {
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "orders"), (snapshot) => {
+            const ordersData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setOrders(ordersData);
+        });
+        return () => unsubscribe();
+    }, []);
+
     const getStatusColor = (status) => {
         switch (status) {
             case 'New': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
@@ -920,11 +993,16 @@ const OrderManager = () => {
             default: return 'bg-gray-100 text-gray-800';
         }
     };
+    
+    if (orders.length === 0) {
+        return <p>No live orders...</p>
+    }
+
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Live Orders</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {DUMMY_ORDERS.map(order => (
+                {orders.map(order => (
                     <div key={order.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 flex flex-col">
                         <div className="flex justify-between items-start">
                             <div>
@@ -955,6 +1033,13 @@ const OrderManager = () => {
 };
 
 const ReservationManager = () => {
+    const [reservations, setReservations] = useState([]);
+
+    useEffect(() => {
+        // In a real app, you would fetch this from Firestore
+        setReservations(DUMMY_RESERVATIONS);
+    }, []);
+
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Table Reservations</h2>
@@ -970,7 +1055,7 @@ const ReservationManager = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        {DUMMY_RESERVATIONS.map(res => (
+                        {reservations.map(res => (
                             <tr key={res.id}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">{res.name}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">{res.guests}</td>
@@ -979,8 +1064,8 @@ const ReservationManager = () => {
                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${res.status === 'Confirmed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>{res.status}</span>
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    {res.status === 'Pending' && <a href="#" className="text-green-600 hover:text-green-900">Confirm</a>}
-                                    <a href="#" className="ml-4 text-red-600 hover:text-red-900">Cancel</a>
+                                    {res.status === 'Pending' && <button className="text-green-600 hover:text-green-900">Confirm</button>}
+                                    <button className="ml-4 text-red-600 hover:text-red-900">Cancel</button>
                                 </td>
                             </tr>
                         ))}
@@ -1008,10 +1093,25 @@ const CustomerDashboard = () => {
 }
 
 const MenuPage = () => {
-    const [activeCategory, setActiveCategory] = useState('Appetizers');
+    const [menuItems, setMenuItems] = useState({});
+    const [activeCategory, setActiveCategory] = useState('');
     const [order, setOrder] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [customizingItem, setCustomizingItem] = useState(null);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
+            const menuData = {};
+            snapshot.forEach(doc => {
+                menuData[doc.id] = doc.data().items;
+            });
+            setMenuItems(menuData);
+            if (snapshot.docs.length > 0) {
+                setActiveCategory(snapshot.docs[0].id); // Set initial category
+            }
+        });
+        return () => unsubscribe();
+    }, []);
 
     const addToOrder = (item) => {
         if (item.customizable) {
@@ -1039,6 +1139,10 @@ const MenuPage = () => {
 
     const orderTotal = order.reduce((total, item) => total + item.price * item.quantity, 0);
 
+    if (Object.keys(menuItems).length === 0) {
+        return <div className="min-h-screen flex items-center justify-center"><p>Loading menu...</p></div>
+    }
+
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
             {customizingItem && <ThaliCustomizationModal item={customizingItem} onClose={() => setCustomizingItem(null)} setOrder={setOrder} />}
@@ -1053,7 +1157,7 @@ const MenuPage = () => {
                     <aside className="hidden lg:block">
                         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Categories</h2>
                         <nav className="space-y-1">
-                            {Object.keys(DUMMY_MENU_ITEMS).map(category => (
+                            {Object.keys(menuItems).map(category => (
                                 <button
                                     key={category}
                                     onClick={() => setActiveCategory(category)}
@@ -1078,7 +1182,7 @@ const MenuPage = () => {
                                 onChange={(e) => setActiveCategory(e.target.value)}
                                 className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                             >
-                                {Object.keys(DUMMY_MENU_ITEMS).map(category => (
+                                {Object.keys(menuItems).map(category => (
                                     <option key={category} value={category}>{category}</option>
                                 ))}
                             </select>
@@ -1086,7 +1190,7 @@ const MenuPage = () => {
                         
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{activeCategory}</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {DUMMY_MENU_ITEMS[activeCategory].map(item => (
+                            {menuItems[activeCategory]?.map(item => (
                                 <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col">
                                     <img src={item.image} alt={item.name} className="h-48 w-full object-cover" />
                                     <div className="p-4 flex flex-col flex-grow">
