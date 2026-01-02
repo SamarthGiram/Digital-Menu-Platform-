@@ -57,6 +57,31 @@ const MinusCircleIcon = (props) => (
 const CheckCircleIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
 );
+const SearchIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+);
+const HeartIcon = ({ className, filled }) => (
+    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+);
+const ShareIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+);
+const PrinterIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14" rx="1"/></svg>
+);
+const FilterIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+);
+const InfoIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+);
+// Icons reserved for future use
+// const PlayIcon = (props) => (
+//     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="5 3 19 12 5 21 5 3"/></svg>
+// );
+// const BellIcon = (props) => (
+//     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+// );
 
 
 // --- Firebase Configuration ---
@@ -80,10 +105,71 @@ const AuthContext = createContext();
 const AppContext = createContext();
 
 // --- DUMMY DATA ---
-const DUMMY_MENU_ITEMS = { /* ... same as before ... */ };
-const DUMMY_ORDERS = [ /* ... same as before ... */ ];
-const DUMMY_RESERVATIONS = [ /* ... same as before ... */ ];
-const DUMMY_TESTIMONIALS = [ /* ... same as before ... */ ];
+const DUMMY_MENU_ITEMS = {
+    "Appetizers": [
+        { id: "app1", name: "Bruschetta", description: "Toasted bread with fresh tomatoes, basil, and mozzarella", price: 8.99, image: "https://images.unsplash.com/photo-1572441713132-51c75654db73?w=400", rating: 4.5, reviews: 23, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 280, protein: "12g", carbs: "35g", fat: "10g" }, video: null, prepTime: "10 min" },
+        { id: "app2", name: "Caesar Salad", description: "Crisp romaine lettuce with Caesar dressing and parmesan", price: 9.99, image: "https://images.unsplash.com/photo-1546793665-c74683f339c1?w=400", rating: 4.3, reviews: 18, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 320, protein: "15g", carbs: "18g", fat: "22g" }, video: null, prepTime: "8 min" },
+        { id: "app3", name: "Chicken Wings", description: "Spicy buffalo wings with blue cheese dip", price: 12.99, image: "https://images.unsplash.com/photo-1527477396000-e27137b33c7f?w=400", rating: 4.7, reviews: 31, customizable: false, dietary: [], nutrition: { calories: 450, protein: "28g", carbs: "12g", fat: "32g" }, video: null, prepTime: "15 min" },
+    ],
+    "Main Courses": [
+        { id: "main1", name: "Spaghetti Carbonara", description: "Classic Italian pasta with bacon, eggs, and parmesan", price: 16.99, image: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=400", rating: 4.8, reviews: 45, customizable: false, dietary: [], nutrition: { calories: 680, protein: "32g", carbs: "75g", fat: "28g" }, video: null, prepTime: "20 min" },
+        { id: "main2", name: "Grilled Salmon", description: "Fresh Atlantic salmon with lemon butter and vegetables", price: 22.99, image: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400", rating: 4.6, reviews: 38, customizable: false, dietary: ["gluten-free"], nutrition: { calories: 520, protein: "42g", carbs: "8g", fat: "32g" }, video: null, prepTime: "25 min" },
+        { id: "main3", name: "Margherita Pizza", description: "Traditional pizza with tomato, mozzarella, and basil", price: 14.99, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400", rating: 4.4, reviews: 52, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 750, protein: "28g", carbs: "95g", fat: "28g" }, video: "https://www.youtube.com/embed/dQw4w9WgXcQ", prepTime: "18 min" },
+    ],
+    "Thali": [
+        { 
+            id: "thali1", 
+            name: "Deluxe Thali", 
+            description: "Complete meal with rice, dal, vegetables, roti, and dessert", 
+            price: 15.99, 
+            image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400", 
+            rating: 4.9, 
+            reviews: 67, 
+            customizable: true,
+            components: {
+                "Rice": ["Basmati Rice", "Jeera Rice", "Brown Rice"],
+                "Dal": ["Dal Tadka", "Dal Makhani", "Chana Dal"],
+                "Vegetable": ["Aloo Gobi", "Paneer Butter Masala", "Mix Vegetables"],
+                "Roti": ["Plain Roti", "Butter Roti", "Naan"],
+                "Dessert": ["Gulab Jamun", "Kheer", "Ice Cream"]
+            },
+            alternatives: {
+                "Paneer Butter Masala": ["Chicken Curry", "Mutton Curry"],
+                "Plain Roti": ["Paratha", "Kulcha"]
+            },
+            dietary: ["vegetarian"],
+            nutrition: { calories: 850, protein: "28g", carbs: "120g", fat: "32g" },
+            video: null,
+            prepTime: "30 min"
+        },
+    ],
+    "Desserts": [
+        { id: "dessert1", name: "Chocolate Lava Cake", description: "Warm chocolate cake with molten center and vanilla ice cream", price: 8.99, image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400", rating: 4.9, reviews: 41, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 420, protein: "6g", carbs: "58g", fat: "18g" }, video: null, prepTime: "12 min" },
+        { id: "dessert2", name: "Tiramisu", description: "Classic Italian dessert with coffee and mascarpone", price: 9.99, image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=400", rating: 4.7, reviews: 29, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 380, protein: "8g", carbs: "42g", fat: "20g" }, video: null, prepTime: "15 min" },
+    ],
+    "Beverages": [
+        { id: "bev1", name: "Fresh Orange Juice", description: "Freshly squeezed orange juice", price: 4.99, image: "https://images.unsplash.com/photo-1600271886742-f049cd451bba?w=400", rating: 4.2, reviews: 15, customizable: false, dietary: ["vegan", "gluten-free"], nutrition: { calories: 110, protein: "2g", carbs: "26g", fat: "0g" }, video: null, prepTime: "5 min" },
+        { id: "bev2", name: "Cappuccino", description: "Espresso with steamed milk foam", price: 5.99, image: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400", rating: 4.5, reviews: 22, customizable: false, dietary: ["vegetarian"], nutrition: { calories: 80, protein: "4g", carbs: "8g", fat: "3g" }, video: null, prepTime: "5 min" },
+    ]
+};
+
+const DUMMY_ORDERS = [
+    { id: "ord1", table: "5", items: [{ name: "Spaghetti Carbonara", qty: 2 }, { name: "Caesar Salad", qty: 1 }], total: 43.97, status: "New", timestamp: new Date() },
+    { id: "ord2", table: "12", items: [{ name: "Grilled Salmon", qty: 1 }, { name: "Bruschetta", qty: 1 }], total: 31.98, status: "Preparing", timestamp: new Date(Date.now() - 300000) },
+    { id: "ord3", table: "8", items: [{ name: "Deluxe Thali", qty: 3 }], total: 47.97, status: "Served", timestamp: new Date(Date.now() - 600000) },
+];
+
+const DUMMY_RESERVATIONS = [
+    { id: "res1", name: "John Smith", guests: 4, time: "7:00 PM", date: "2025-01-20", status: "Confirmed" },
+    { id: "res2", name: "Sarah Johnson", guests: 2, time: "8:30 PM", date: "2025-01-20", status: "Pending" },
+    { id: "res3", name: "Mike Davis", guests: 6, time: "6:00 PM", date: "2025-01-21", status: "Confirmed" },
+];
+
+const DUMMY_TESTIMONIALS = [
+    { name: "Chef Marco", quote: "This platform transformed our restaurant operations. Orders are faster, customers are happier!", image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop" },
+    { name: "Restaurant Owner Lisa", quote: "The analytics dashboard helps us understand our customers better. Highly recommended!", image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop" },
+    { name: "Hotel Manager David", quote: "Our guests love the QR menu feature. It's modern, contactless, and efficient.", image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop" },
+];
 
 // --- PROVIDERS ---
 const ThemeProvider = ({ children }) => {
@@ -681,9 +767,9 @@ const LoginPage = () => {
                             </div>
 
                             <div className="text-sm">
-                                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300">
                                     Forgot your password?
-                                </a>
+                                </button>
                             </div>
                         </div>
 
@@ -704,22 +790,91 @@ const LoginPage = () => {
                         </div>
                         <div className="mt-6 grid grid-cols-2 gap-3">
                             <div>
-                                <a href="#" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <button type="button" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <span className="sr-only">Sign in with Google</span>
                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.14 6.839 9.491.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.942.359.308.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0020 10c0-5.523-4.477-10-10-10z" clipRule="evenodd" /></svg>
-                                </a>
+                                </button>
                             </div>
                             <div>
-                                <a href="#" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                <button type="button" className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-sm font-medium text-gray-500 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600">
                                     <span className="sr-only">Sign in with Facebook</span>
                                     <svg className="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M20 10c0-5.523-4.477-10-10-10S0 4.477 0 10c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V10h2.54V7.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V10h2.773l-.443 2.89h-2.33v6.988C16.343 19.128 20 14.991 20 10z" clipRule="evenodd" /></svg>
-                                </a>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    );
+};
+
+// --- Toast Notification Component ---
+const ToastContext = createContext();
+const ToastProvider = ({ children }) => {
+    const [toasts, setToasts] = useState([]);
+    
+    const showToast = (message, type = 'info') => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, message, type }]);
+        setTimeout(() => {
+            setToasts(prev => prev.filter(toast => toast.id !== id));
+        }, 3000);
+    };
+    
+    return (
+        <ToastContext.Provider value={{ showToast }}>
+            {children}
+            <div className="fixed top-20 right-4 z-50 space-y-2">
+                {toasts.map(toast => (
+                    <div
+                        key={toast.id}
+                        className={`px-4 py-3 rounded-lg shadow-lg text-white animate-slide-in ${
+                            toast.type === 'success' ? 'bg-green-500' :
+                            toast.type === 'error' ? 'bg-red-500' :
+                            toast.type === 'warning' ? 'bg-yellow-500' :
+                            'bg-indigo-500'
+                        }`}
+                    >
+                        {toast.message}
+                    </div>
+                ))}
+            </div>
+        </ToastContext.Provider>
+    );
+};
+
+// --- Seed Database Button Component ---
+const SeedDatabaseButton = () => {
+    const [isSeeding, setIsSeeding] = useState(false);
+    const toastContext = useContext(ToastContext);
+    const showToast = toastContext?.showToast || ((msg, type) => {
+        if (type === 'error') console.error(msg);
+        else console.log(msg);
+    });
+    
+    const seedDatabase = async () => {
+        setIsSeeding(true);
+        try {
+            for (const [category, items] of Object.entries(DUMMY_MENU_ITEMS)) {
+                await setDoc(doc(db, "menu", category), { items });
+            }
+            showToast('Menu data seeded successfully!', 'success');
+        } catch (error) {
+            showToast('Error seeding database: ' + error.message, 'error');
+        } finally {
+            setIsSeeding(false);
+        }
+    };
+    
+    return (
+        <button
+            onClick={seedDatabase}
+            disabled={isSeeding}
+            className="mt-4 bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+            {isSeeding ? 'Seeding...' : 'Seed Database with Sample Menu'}
+        </button>
     );
 };
 
@@ -831,27 +986,113 @@ const AnalyticsContent = () => {
 
 const MenuManager = () => {
     const [menuItems, setMenuItems] = useState({});
+    // Reserved for future edit functionality
+    // const [editingItem, setEditingItem] = useState(null);
+    // const [showAddModal, setShowAddModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const toastContext = useContext(ToastContext);
+    const showToast = toastContext?.showToast || ((msg) => console.log(msg));
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
-            const menuData = {};
-            snapshot.forEach(doc => {
-                menuData[doc.id] = doc.data().items;
+        // Check if Firebase is configured
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+        
+        if (!isFirebaseConfigured) {
+            // Use dummy data if Firebase is not configured
+            setMenuItems(DUMMY_MENU_ITEMS);
+            if (Object.keys(DUMMY_MENU_ITEMS).length > 0 && !selectedCategory) {
+                setSelectedCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+            }
+            return;
+        }
+
+        // Try to load from Firebase
+        let unsubscribe;
+        try {
+            unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
+                const menuData = {};
+                snapshot.forEach(doc => {
+                    menuData[doc.id] = doc.data().items;
+                });
+                
+                // If Firebase has data, use it; otherwise fallback to dummy data
+                if (Object.keys(menuData).length > 0) {
+                    setMenuItems(menuData);
+                    if (!selectedCategory) {
+                        setSelectedCategory(Object.keys(menuData)[0]);
+                    }
+                } else {
+                    // No data in Firebase, use dummy data
+                    setMenuItems(DUMMY_MENU_ITEMS);
+                    if (!selectedCategory) {
+                        setSelectedCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+                    }
+                }
+            }, (error) => {
+                // If Firebase fails, use dummy data
+                console.warn('Firebase error, using dummy data:', error);
+                setMenuItems(DUMMY_MENU_ITEMS);
+                if (!selectedCategory) {
+                    setSelectedCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+                }
             });
-            setMenuItems(menuData);
-        });
-        return () => unsubscribe(); // Cleanup listener on component unmount
+        } catch (error) {
+            // If Firebase initialization fails, use dummy data
+            console.warn('Firebase initialization error, using dummy data:', error);
+            setMenuItems(DUMMY_MENU_ITEMS);
+            if (!selectedCategory) {
+                setSelectedCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+            }
+        }
+        
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleDeleteItem = async (category, itemId) => {
+        if (!window.confirm('Are you sure you want to delete this item?')) return;
+        
+        try {
+            const updatedItems = menuItems[category].filter(item => item.id !== itemId);
+            await setDoc(doc(db, "menu", category), { items: updatedItems });
+            showToast('Item deleted successfully', 'success');
+        } catch (error) {
+            showToast('Error deleting item: ' + error.message, 'error');
+        }
+    };
+
     if (Object.keys(menuItems).length === 0) {
-        return <p>Loading menu or no items found in database...</p>
+        return (
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+                <p className="text-gray-600 dark:text-gray-400">Loading menu or no items found in database. Use the "Seed Database" button to add sample data.</p>
+            </div>
+        );
     }
 
     return (
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-bold text-gray-900 dark:text-white">Menu Management</h2>
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">Add New Item</button>
+                <div className="flex gap-2">
+                    <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    >
+                        {Object.keys(menuItems).map(cat => (
+                            <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                    </select>
+                    <button 
+                        onClick={() => showToast('Add item functionality coming soon!', 'info')}
+                        className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 flex items-center gap-2"
+                    >
+                        <PlusCircleIcon className="h-5 w-5" />
+                        Add New Item
+                    </button>
+                </div>
             </div>
             <div className="space-y-8">
                 {Object.keys(menuItems).map(category => (
@@ -880,10 +1121,20 @@ const MenuManager = () => {
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${item.price.toFixed(2)}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">${(item.price || 0).toFixed(2)}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <button className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200">Edit</button>
-                                                <button className="ml-4 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200">Delete</button>
+                                                <button 
+                                                    onClick={() => showToast('Edit functionality coming soon!', 'info')}
+                                                    className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-200"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button 
+                                                    onClick={() => handleDeleteItem(category, item.id)}
+                                                    className="ml-4 text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-200"
+                                                >
+                                                    Delete
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -1000,15 +1251,75 @@ const ReservationManager = () => {
 };
 
 const CustomerDashboard = () => {
-    // This is a placeholder for a customer dashboard.
+    const [orders, setOrders] = useState([]);
+    const { navigate } = useContext(AppContext);
+    
+    useEffect(() => {
+        // In a real app, fetch user's orders from Firestore
+        setOrders(DUMMY_ORDERS);
+    }, []);
+    
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'New': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+            case 'Preparing': return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+            case 'Served': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+            default: return 'bg-gray-100 text-gray-800';
+        }
+    };
+    
     return (
         <div className="bg-gray-100 dark:bg-gray-900 min-h-screen">
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Account</h1>
-                <div className="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+                
+                <div className="mt-8 grid gap-6">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Order History</h2>
-                    <p className="text-gray-600 dark:text-gray-400">Your recent orders will appear here.</p>
-                    {/* Order history list would go here */}
+                        {orders.length === 0 ? (
+                            <p className="text-gray-600 dark:text-gray-400">No orders yet. <button onClick={() => navigate('menu-demo')} className="text-indigo-600 hover:underline">Browse menu</button></p>
+                        ) : (
+                            <div className="space-y-4">
+                                {orders.map(order => (
+                                    <div key={order.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                                        <div className="flex justify-between items-start mb-3">
+                                            <div>
+                                                <p className="font-semibold text-gray-900 dark:text-white">Order #{order.id}</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">Table {order.table}</p>
+                </div>
+                                            <span className={`px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.status)}`}>
+                                                {order.status}
+                                            </span>
+                                        </div>
+                                        <ul className="space-y-1 mb-3">
+                                            {order.items.map((item, idx) => (
+                                                <li key={idx} className="text-sm text-gray-600 dark:text-gray-400">
+                                                    {item.qty}x {item.name}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        <div className="flex justify-between items-center pt-3 border-t border-gray-200 dark:border-gray-700">
+                                            <span className="font-bold text-gray-900 dark:text-white">Total: ${order.total.toFixed(2)}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                    
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow">
+                        <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Quick Actions</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            <button onClick={() => navigate('menu-demo')} className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-lg hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors">
+                                <UtensilsIcon className="h-8 w-8 text-indigo-600 dark:text-indigo-400 mx-auto mb-2" />
+                                <p className="font-semibold text-gray-900 dark:text-white">View Menu</p>
+                            </button>
+                            <button onClick={() => navigate('contact')} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
+                                <CalendarIcon className="h-8 w-8 text-gray-600 dark:text-gray-400 mx-auto mb-2" />
+                                <p className="font-semibold text-gray-900 dark:text-white">Make Reservation</p>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1021,20 +1332,92 @@ const MenuPage = () => {
     const [order, setOrder] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [customizingItem, setCustomizingItem] = useState(null);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [favorites, setFavorites] = useState(() => JSON.parse(localStorage.getItem('favorites') || '[]'));
+    const [showFilters, setShowFilters] = useState(false);
+    const [priceFilter, setPriceFilter] = useState('all');
+    const [dietaryFilter, setDietaryFilter] = useState('all');
+    const [sortBy, setSortBy] = useState('name');
+    const [selectedItem, setSelectedItem] = useState(null);
+    const toastContext = useContext(ToastContext);
+    const showToast = toastContext?.showToast || ((msg, type) => {
+        if (type === 'error') console.error(msg);
+        else console.log(msg);
+    });
 
     useEffect(() => {
-        const unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
-            const menuData = {};
-            snapshot.forEach(doc => {
-                menuData[doc.id] = doc.data().items;
+        // Check if Firebase is configured
+        const isFirebaseConfigured = firebaseConfig.apiKey !== "YOUR_API_KEY";
+        
+        if (!isFirebaseConfigured) {
+            // Use dummy data if Firebase is not configured
+            setMenuItems(DUMMY_MENU_ITEMS);
+            if (Object.keys(DUMMY_MENU_ITEMS).length > 0 && !activeCategory) {
+                setActiveCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+            }
+            return;
+        }
+
+        // Try to load from Firebase
+        let unsubscribe;
+        try {
+            unsubscribe = onSnapshot(collection(db, "menu"), (snapshot) => {
+                const menuData = {};
+                snapshot.forEach(doc => {
+                    menuData[doc.id] = doc.data().items;
+                });
+                
+                // If Firebase has data, use it; otherwise fallback to dummy data
+                if (Object.keys(menuData).length > 0) {
+                    setMenuItems(menuData);
+                    if (!activeCategory) {
+                        setActiveCategory(Object.keys(menuData)[0]);
+                    }
+                } else {
+                    // No data in Firebase, use dummy data
+                    setMenuItems(DUMMY_MENU_ITEMS);
+                    if (!activeCategory) {
+                        setActiveCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+                    }
+                }
+            }, (error) => {
+                // If Firebase fails, use dummy data
+                console.warn('Firebase error, using dummy data:', error);
+                setMenuItems(DUMMY_MENU_ITEMS);
+                if (!activeCategory) {
+                    setActiveCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+                }
             });
-            setMenuItems(menuData);
-            if (snapshot.docs.length > 0) {
-                setActiveCategory(snapshot.docs[0].id); // Set initial category
+        } catch (error) {
+            // If Firebase initialization fails, use dummy data
+            console.warn('Firebase initialization error, using dummy data:', error);
+            setMenuItems(DUMMY_MENU_ITEMS);
+            if (!activeCategory) {
+                setActiveCategory(Object.keys(DUMMY_MENU_ITEMS)[0]);
+            }
+        }
+        
+        return () => {
+            if (unsubscribe) unsubscribe();
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+    }, [favorites]);
+
+    const toggleFavorite = (itemId) => {
+        setFavorites(prev => {
+            if (prev.includes(itemId)) {
+                showToast('Removed from favorites', 'info');
+                return prev.filter(id => id !== itemId);
+            } else {
+                showToast('Added to favorites', 'success');
+                return [...prev, itemId];
             }
         });
-        return () => unsubscribe();
-    }, []);
+    };
 
     const addToOrder = (item) => {
         if (item.customizable) {
@@ -1044,8 +1427,10 @@ const MenuPage = () => {
         setOrder(currentOrder => {
             const existingItem = currentOrder.find(i => i.id === item.id);
             if (existingItem) {
+                showToast(`${item.name} quantity updated`, 'success');
                 return currentOrder.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
             }
+            showToast(`${item.name} added to cart`, 'success');
             return [...currentOrder, { ...item, quantity: 1 }];
         });
     };
@@ -1060,19 +1445,190 @@ const MenuPage = () => {
         });
     };
 
-    const orderTotal = order.reduce((total, item) => total + item.price * item.quantity, 0);
+    const [tableNumber, setTableNumber] = useState('');
+    const [showTableInput, setShowTableInput] = useState(false);
+    
+    const handlePlaceOrder = () => {
+        if (order.length === 0) return;
+        if (!tableNumber.trim()) {
+            setShowTableInput(true);
+            return;
+        }
+        // In a real app, save to Firestore
+        // const orderData = {
+        //     table: tableNumber,
+        //     items: order.map(item => ({ name: item.name, qty: item.quantity })),
+        //     total: orderTotal,
+        //     status: 'New',
+        //     timestamp: new Date()
+        // };
+        showToast(`Order placed successfully for Table ${tableNumber}!`, 'success');
+        setOrder([]);
+        setIsCartOpen(false);
+        setTableNumber('');
+        setShowTableInput(false);
+    };
+
+    const handlePrintMenu = () => {
+        window.print();
+    };
+
+    const handleShareMenu = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Digital Menu',
+                    text: 'Check out our digital menu!',
+                    url: window.location.href
+                });
+            } catch (err) {
+                // User cancelled or error occurred
+            }
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            showToast('Menu link copied to clipboard!', 'success');
+        }
+    };
+
+    const orderTotal = order.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0);
+
+    // Get all items from all categories
+    const allItems = Object.values(menuItems).flat().filter(Boolean);
+    
+    // Filter and search items
+    let filteredItems = activeCategory ? (menuItems[activeCategory] || []) : allItems;
+    
+    if (searchQuery) {
+        filteredItems = filteredItems.filter(item =>
+            item && item.name && item.description &&
+            (item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            item.description.toLowerCase().includes(searchQuery.toLowerCase()))
+        );
+    }
+    
+    if (priceFilter !== 'all') {
+        const [min, max] = priceFilter.split('-').map(Number);
+        filteredItems = filteredItems.filter(item => {
+            if (!item || typeof item.price !== 'number') return false;
+            if (max) return item.price >= min && item.price <= max;
+            return item.price >= min;
+        });
+    }
+    
+    if (dietaryFilter !== 'all') {
+        filteredItems = filteredItems.filter(item =>
+            item && item.dietary && Array.isArray(item.dietary) && item.dietary.includes(dietaryFilter)
+        );
+    }
+    
+    // Sort items
+    filteredItems = [...filteredItems].filter(Boolean).sort((a, b) => {
+        switch (sortBy) {
+            case 'price-low': return (a.price || 0) - (b.price || 0);
+            case 'price-high': return (b.price || 0) - (a.price || 0);
+            case 'rating': return (b.rating || 0) - (a.rating || 0);
+            case 'name': default: return (a.name || '').localeCompare(b.name || '');
+        }
+    });
 
     if (Object.keys(menuItems).length === 0) {
-        return <div className="min-h-screen flex items-center justify-center"><p>Loading menu...</p></div>
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+                    <p className="mt-4 text-gray-600 dark:text-gray-400">Loading menu...</p>
+                </div>
+            </div>
+        );
     }
 
     return (
         <div className="bg-gray-50 dark:bg-gray-900 min-h-screen">
             {customizingItem && <ThaliCustomizationModal item={customizingItem} onClose={() => setCustomizingItem(null)} setOrder={setOrder} />}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="text-center mb-12">
+                <div className="text-center mb-8">
+                    <div className="flex justify-between items-center mb-4">
+                        <div className="flex-1">
                     <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">Our Menu</h1>
                     <p className="mt-2 text-lg text-gray-500 dark:text-gray-400">Freshly prepared, just for you.</p>
+                        </div>
+                        <div className="flex gap-2 no-print">
+                            <button onClick={handlePrintMenu} className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" title="Print Menu">
+                                <PrinterIcon className="h-5 w-5" />
+                            </button>
+                            <button onClick={handleShareMenu} className="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600" title="Share Menu">
+                                <ShareIcon className="h-5 w-5" />
+                            </button>
+                        </div>
+                    </div>
+                    
+                    {/* Search Bar */}
+                    <div className="relative mb-4">
+                        <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder="Search menu items..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                        />
+                    </div>
+                    
+                    {/* Filters and Sort */}
+                    <div className="flex flex-wrap gap-4 items-center justify-between mb-6">
+                        <button
+                            onClick={() => setShowFilters(!showFilters)}
+                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
+                        >
+                            <FilterIcon className="h-5 w-5" />
+                            Filters
+                        </button>
+                        <select
+                            value={sortBy}
+                            onChange={(e) => setSortBy(e.target.value)}
+                            className="px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                        >
+                            <option value="name">Sort by Name</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="rating">Highest Rated</option>
+                        </select>
+                    </div>
+                    
+                    {/* Filter Panel */}
+                    {showFilters && (
+                        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Price Range</label>
+                                    <select
+                                        value={priceFilter}
+                                        onChange={(e) => setPriceFilter(e.target.value)}
+                                        className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    >
+                                        <option value="all">All Prices</option>
+                                        <option value="0-10">$0 - $10</option>
+                                        <option value="10-20">$10 - $20</option>
+                                        <option value="20-30">$20 - $30</option>
+                                        <option value="30">$30+</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Dietary</label>
+                                    <select
+                                        value={dietaryFilter}
+                                        onChange={(e) => setDietaryFilter(e.target.value)}
+                                        className="w-full px-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                                    >
+                                        <option value="all">All</option>
+                                        <option value="vegetarian">Vegetarian</option>
+                                        <option value="vegan">Vegan</option>
+                                        <option value="gluten-free">Gluten-Free</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
 
                 <div className="lg:grid lg:grid-cols-4 lg:gap-8">
@@ -1080,6 +1636,16 @@ const MenuPage = () => {
                     <aside className="hidden lg:block">
                         <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Categories</h2>
                         <nav className="space-y-1">
+                            <button
+                                onClick={() => setActiveCategory('')}
+                                className={`w-full text-left flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                                    activeCategory === ''
+                                    ? 'bg-indigo-100 text-indigo-700 dark:bg-gray-700 dark:text-white'
+                                    : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                                }`}
+                            >
+                                All Items
+                            </button>
                             {Object.keys(menuItems).map(category => (
                                 <button
                                     key={category}
@@ -1105,38 +1671,120 @@ const MenuPage = () => {
                                 onChange={(e) => setActiveCategory(e.target.value)}
                                 className="w-full rounded-md border-gray-300 dark:border-gray-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                             >
+                                <option value="">All Items</option>
                                 {Object.keys(menuItems).map(category => (
                                     <option key={category} value={category}>{category}</option>
                                 ))}
                             </select>
                         </div>
                         
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">{activeCategory}</h2>
+                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                            {activeCategory || 'All Items'} {filteredItems.length > 0 && `(${filteredItems.length})`}
+                        </h2>
+                        
+                        {/* Popular Items Section */}
+                        {!searchQuery && activeCategory && filteredItems.length > 0 && allItems.length > 0 && (
+                            <div className="mb-8">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">⭐ Popular Items</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    {allItems
+                                        .filter(item => item && item.rating >= 4.5)
+                                        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+                                        .slice(0, 3)
+                                        .map(item => (
+                                            <div key={item.id} className="bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20 rounded-lg p-4 border-2 border-indigo-200 dark:border-indigo-800">
+                                                <div className="flex items-center gap-3">
+                                                    <img src={item.image} alt={item.name} className="w-16 h-16 rounded-lg object-cover" />
+                                                    <div className="flex-1">
+                                                        <h4 className="font-semibold text-gray-900 dark:text-white">{item.name}</h4>
+                                                        <div className="flex items-center gap-1 mt-1">
+                                                            <StarIcon className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                                                            <span className="text-sm text-gray-600 dark:text-gray-400">{item.rating?.toFixed(1)}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                </div>
+                            </div>
+                        )}
+                        
+                        {filteredItems.length === 0 ? (
+                            <div className="text-center py-12">
+                                <p className="text-gray-500 dark:text-gray-400 text-lg">No items found matching your criteria.</p>
+                            </div>
+                        ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {menuItems[activeCategory]?.map(item => (
-                                <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col">
-                                    <img src={item.image} alt={item.name} className="h-48 w-full object-cover" />
-                                    <div className="p-4 flex flex-col flex-grow">
-                                        <div className="flex justify-between items-start">
-                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{item.name}</h3>
-                                            <p className="text-lg font-semibold text-indigo-600 dark:text-indigo-400">${item.price.toFixed(2)}</p>
+                                {filteredItems.map(item => (
+                                    <div key={item.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden flex flex-col hover:shadow-lg transition-shadow relative group">
+                                        <div className="relative">
+                                    <img src={item.image || ''} alt={item.name || 'Menu item'} className="h-48 w-full object-cover" />
+                                            <button
+                                                onClick={() => toggleFavorite(item.id)}
+                                                className="absolute top-2 right-2 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800 transition-colors"
+                                            >
+                                                <HeartIcon className={`h-5 w-5 ${favorites.includes(item.id) ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} filled={favorites.includes(item.id)} />
+                                            </button>
+                                            {item.rating && (
+                                                <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/70 text-white px-2 py-1 rounded-md text-sm">
+                                                    <StarIcon className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                                                    <span>{(item.rating || 0).toFixed(1)}</span>
+                                                    {item.reviews && <span className="text-xs">({item.reviews})</span>}
+                                                </div>
+                                            )}
                                         </div>
-                                        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 flex-grow">{item.description}</p>
-                                        <div className="mt-4">
-                                            <button onClick={() => addToOrder(item)} className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors">
-                                                {item.customizable ? 'Customize & Add' : 'Add to Order'}
+                                    <div className="p-4 flex flex-col flex-grow">
+                                            <div className="flex justify-between items-start mb-2">
+                                            <h3 className="text-lg font-bold text-gray-900 dark:text-white">{item.name || 'Unnamed Item'}</h3>
+                                            <p className="text-lg font-semibold text-indigo-600 dark:text-indigo-400">${(item.price || 0).toFixed(2)}</p>
+                                        </div>
+                                            <p className="text-sm text-gray-600 dark:text-gray-400 flex-grow mb-3">{item.description || 'No description available'}</p>
+                                            {item.dietary && Array.isArray(item.dietary) && item.dietary.length > 0 && (
+                                                <div className="flex flex-wrap gap-1 mb-3">
+                                                    {item.dietary.map(diet => (
+                                                        <span key={diet} className="px-2 py-1 text-xs bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">
+                                                            {diet}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => setSelectedItem(item)}
+                                                    className="flex-1 px-3 py-2 text-sm bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 rounded-lg transition-colors flex items-center justify-center gap-1"
+                                                >
+                                                    <InfoIcon className="h-4 w-4" />
+                                                    Details
+                                                </button>
+                                                <button
+                                                    onClick={() => addToOrder(item)}
+                                                    className="flex-1 bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+                                                >
+                                                    {item.customizable ? 'Customize' : 'Add to Cart'}
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
+                        )}
                     </main>
                 </div>
+                
+                {/* Item Detail Modal */}
+                {selectedItem && (
+                    <ItemDetailModal 
+                        item={selectedItem} 
+                        onClose={() => setSelectedItem(null)} 
+                        onAddToCart={addToOrder}
+                        favorites={favorites}
+                        onToggleFavorite={toggleFavorite}
+                    />
+                )}
             </div>
 
             {/* Cart Floating Button */}
-            <div className="fixed bottom-6 right-6 z-50">
+            <div className="fixed bottom-6 right-6 z-50 no-print">
                 <button onClick={() => setIsCartOpen(true)} className="bg-indigo-600 text-white p-4 rounded-full shadow-lg hover:bg-indigo-700 transition-transform transform hover:scale-110">
                     <ShoppingCartIcon className="h-8 w-8" />
                     {order.length > 0 && (
@@ -1171,7 +1819,7 @@ const MenuPage = () => {
                                             <img src={item.image} alt={item.name} className="h-16 w-16 rounded-md object-cover" />
                                             <div className="ml-4">
                                                 <p className="font-semibold text-gray-900 dark:text-white">{item.name}</p>
-                                                <p className="text-sm text-gray-500 dark:text-gray-400">${item.price.toFixed(2)}</p>
+                                                <p className="text-sm text-gray-500 dark:text-gray-400">${(item.price || 0).toFixed(2)}</p>
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-2">
@@ -1185,18 +1833,251 @@ const MenuPage = () => {
                         )}
                         {order.length > 0 && (
                             <div className="p-6 border-t dark:border-gray-700">
+                                {showTableInput && (
+                                    <div className="mb-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                            Table/Room Number *
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={tableNumber}
+                                            onChange={(e) => setTableNumber(e.target.value)}
+                                            placeholder="Enter table number"
+                                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500"
+                                            autoFocus
+                                        />
+                                    </div>
+                                )}
                                 <div className="flex justify-between items-center text-lg font-bold mb-4">
                                     <span className="text-gray-900 dark:text-white">Total:</span>
                                     <span className="text-indigo-600 dark:text-indigo-400">${orderTotal.toFixed(2)}</span>
                                 </div>
-                                <button className="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700">
-                                    Place Order
+                                <button onClick={handlePlaceOrder} className="w-full bg-green-600 text-white py-3 rounded-lg text-lg font-semibold hover:bg-green-700">
+                                    {showTableInput ? 'Confirm Order' : 'Place Order'}
                                 </button>
                             </div>
                         )}
                     </div>
                 </div>
             )}
+        </div>
+    );
+};
+
+// --- Item Detail Modal Component ---
+const ItemDetailModal = ({ item, onClose, onAddToCart, favorites, onToggleFavorite }) => {
+    const [activeTab, setActiveTab] = useState('details');
+    const [showReviewForm, setShowReviewForm] = useState(false);
+    const [reviewRating, setReviewRating] = useState(5);
+    const [reviewText, setReviewText] = useState('');
+    const toastContext = useContext(ToastContext);
+    const showToast = toastContext?.showToast || ((msg, type) => {
+        if (type === 'error') console.error(msg);
+        else console.log(msg);
+    });
+    
+    const handleSubmitReview = () => {
+        if (!reviewText.trim()) {
+            showToast('Please enter a review', 'warning');
+            return;
+        }
+        showToast('Thank you for your review!', 'success');
+        setShowReviewForm(false);
+        setReviewText('');
+    };
+    
+    return (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4" onClick={onClose}>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
+                <div className="relative">
+                    {item.video ? (
+                        <div className="relative w-full h-64 bg-black">
+                            <iframe
+                                title={`Video showcase for ${item.name || 'menu item'}`}
+                                src={item.video}
+                                className="w-full h-full"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    ) : (
+                        <img src={item.image || ''} alt={item.name || 'Menu item'} className="w-full h-64 object-cover" />
+                    )}
+                    <button onClick={onClose} className="absolute top-4 right-4 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800">
+                        <XIcon className="h-6 w-6" />
+                    </button>
+                    <button
+                        onClick={() => onToggleFavorite(item.id)}
+                        className="absolute top-4 left-4 p-2 bg-white/90 dark:bg-gray-800/90 rounded-full hover:bg-white dark:hover:bg-gray-800"
+                    >
+                        <HeartIcon className={`h-6 w-6 ${favorites.includes(item.id) ? 'text-red-500 fill-red-500' : 'text-gray-400'}`} filled={favorites.includes(item.id)} />
+                    </button>
+                </div>
+                
+                <div className="p-6">
+                    <div className="flex justify-between items-start mb-4">
+                        <div>
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{item.name}</h2>
+                            {item.rating && (
+                                <div className="flex items-center gap-2 mt-2">
+                                    <StarIcon className="h-5 w-5 text-yellow-400 fill-yellow-400" />
+                                    <span className="text-gray-600 dark:text-gray-400">{(item.rating || 0).toFixed(1)} ({item.reviews || 0} reviews)</span>
+                                </div>
+                            )}
+                            {item.prepTime && (
+                                <span className="inline-block mt-2 px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded text-sm">
+                                    ⏱️ {item.prepTime}
+                                </span>
+                            )}
+                        </div>
+                        <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">${(item.price || 0).toFixed(2)}</p>
+                    </div>
+                    
+                    {/* Tabs */}
+                    <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
+                        <nav className="flex space-x-4">
+                            <button
+                                onClick={() => setActiveTab('details')}
+                                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                                    activeTab === 'details'
+                                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                                }`}
+                            >
+                                Details
+                            </button>
+                            {item.nutrition && (
+                                <button
+                                    onClick={() => setActiveTab('nutrition')}
+                                    className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                                        activeTab === 'nutrition'
+                                            ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                                    }`}
+                                >
+                                    Nutrition
+                                </button>
+                            )}
+                            <button
+                                onClick={() => setActiveTab('reviews')}
+                                className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                                    activeTab === 'reviews'
+                                        ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
+                                }`}
+                            >
+                                Reviews ({item.reviews || 0})
+                            </button>
+                        </nav>
+                    </div>
+                    
+                    {/* Tab Content */}
+                    <div className="mb-6">
+                        {activeTab === 'details' && (
+                            <div>
+                                <p className="text-gray-600 dark:text-gray-400 mb-4">{item.description}</p>
+                                {item.dietary && item.dietary.length > 0 && (
+                                    <div className="mb-4">
+                                        <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Dietary Information</h3>
+                                        <div className="flex flex-wrap gap-2">
+                                            {item.dietary.map(diet => (
+                                                <span key={diet} className="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm">
+                                                    {diet}
+                                                </span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        
+                        {activeTab === 'nutrition' && item.nutrition && (
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{item.nutrition.calories}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">Calories</div>
+                                </div>
+                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{item.nutrition.protein}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">Protein</div>
+                                </div>
+                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{item.nutrition.carbs}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">Carbs</div>
+                                </div>
+                                <div className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                    <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{item.nutrition.fat}</div>
+                                    <div className="text-sm text-gray-600 dark:text-gray-400">Fat</div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {activeTab === 'reviews' && (
+                            <div>
+                                {!showReviewForm ? (
+                                    <button
+                                        onClick={() => setShowReviewForm(true)}
+                                        className="mb-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                                    >
+                                        Write a Review
+                                    </button>
+                                ) : (
+                                    <div className="mb-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                        <h3 className="font-semibold mb-2">Your Rating</h3>
+                                        <div className="flex gap-1 mb-3">
+                                            {[1, 2, 3, 4, 5].map(star => (
+                                                <button
+                                                    key={star}
+                                                    onClick={() => setReviewRating(star)}
+                                                    className="focus:outline-none"
+                                                >
+                                                    <StarIcon className={`h-6 w-6 ${star <= reviewRating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`} />
+                                                </button>
+                                            ))}
+                                        </div>
+                                        <textarea
+                                            value={reviewText}
+                                            onChange={(e) => setReviewText(e.target.value)}
+                                            placeholder="Share your experience..."
+                                            className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white mb-3"
+                                            rows="3"
+                                        />
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={handleSubmitReview}
+                                                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+                                            >
+                                                Submit Review
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    setShowReviewForm(false);
+                                                    setReviewText('');
+                                                }}
+                                                className="px-4 py-2 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+                                <p className="text-gray-500 dark:text-gray-400 text-sm">Customer reviews will appear here...</p>
+                            </div>
+                        )}
+                    </div>
+                    
+                    <button
+                        onClick={() => {
+                            onAddToCart(item);
+                            onClose();
+                        }}
+                        className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition-colors font-semibold"
+                    >
+                        {item.customizable ? 'Customize & Add to Cart' : 'Add to Cart'}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
@@ -1271,7 +2152,7 @@ const ThaliCustomizationModal = ({ item, onClose, setOrder }) => {
                     ))}
                 </div>
                 <div className="p-6 border-t dark:border-gray-700 flex justify-end items-center space-x-4">
-                    <span className="text-2xl font-bold text-gray-900 dark:text-white">${item.price.toFixed(2)}</span>
+                    <span className="text-2xl font-bold text-gray-900 dark:text-white">${(item.price || 0).toFixed(2)}</span>
                     <button onClick={handleAddToCart} className="bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700">Add to Order</button>
                 </div>
             </div>
@@ -1321,7 +2202,9 @@ export default function DigitalMenuApp() {
         <ThemeProvider>
             <AuthProvider>
                 <AppProvider>
+                    <ToastProvider>
                     <App />
+                    </ToastProvider>
                 </AppProvider>
             </AuthProvider>
         </ThemeProvider>
